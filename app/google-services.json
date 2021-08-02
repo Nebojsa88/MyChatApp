@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "598819535375",
+    "project_id": "mychatapp-34fd0",
+    "storage_bucket": "mychatapp-34fd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598819535375:android:3ee333494dd0692ca5817a",
+        "android_client_info": {
+          "package_name": "com.radanov.mychatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "598819535375-1g6sk8oqpaf61tqphdmhpar429jrnimg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_sKBU6WAfyJvxr55c4JSEPABB2-CCpac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "598819535375-1g6sk8oqpaf61tqphdmhpar429jrnimg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
