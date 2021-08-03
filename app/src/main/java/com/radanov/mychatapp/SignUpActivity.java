@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.radanov.mychatapp.databinding.ActivityMyLoginBinding;
@@ -69,6 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
             String password = binding.editTextPasswordSignup.getText().toString();
             String userName = binding.editTextUserNameSignup.getText().toString();
 
+                //uploadPhoto();
             if(!email.equals("") && !password.equals("") && !userName.equals("")){
 
                 signup(email, password, userName);
@@ -92,28 +94,21 @@ public class SignUpActivity extends AppCompatActivity {
                     if(imageControl)
                     {
                         UUID randomID = UUID.randomUUID();
-                        final String imageName = "images/"+randomID+".jpg";
+                        //final String imageName = "images/"+ randomID + ".jpg";
                         storageReference.child("Users").putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                StorageReference myStorageRef = firebaseStorage.getReference();
-                                myStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        String filePath = uri.toString();
-                                        reference.child("Users").child(auth.getUid()).child("image").setValue(filePath).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Toast.makeText(SignUpActivity.this, "Write to database is successful.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(SignUpActivity.this, "Write to database is not successful.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                    }
-                                });
+                                Toast.makeText(SignUpActivity.this, "Upload Successful !", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SignUpActivity.this, "Sorry, there is a problem !", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
                             }
                         });
                     }
@@ -133,59 +128,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-   /* private void signup(String email, String password, String userName) {
 
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if( task.isSuccessful()){
-                    reference.child("Users").child(auth.getUid()).child("userName").setValue(userName);
-
-                    if(imageControl){
-
-                        UUID randomID = UUID.randomUUID();
-                        final String imageName = "images/"+ randomID+ ".jpg";
-
-                        storageReference.child(imageName).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                StorageReference myStorageRef = firebaseStorage.getReference(imageName);
-                                myStorageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                         String filePath = uri.toString();
-                                         reference.child("Users").child(auth.getUid()).child("image").setValue(filePath).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Toast.makeText(SignUpActivity.this, "Write in database is successful.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(SignUpActivity.this, "Write in database is not successful.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-
-                    }else{
-                        reference.child("Users").child(auth.getUid()).child("image").setValue("null");
-                    }
-
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    intent.putExtra("userName", userName);
-                    startActivity(intent);
-                    finish();
-
-                }else {
-                    Toast.makeText(SignUpActivity.this, "There is a problem !", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }*/
 
     public void imageChooser(){
 
@@ -201,7 +144,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         if(requestCode == 1 && resultCode == RESULT_OK && data != null){
 
-            Uri imageUri = data.getData();
+            imageUri = data.getData();
             Picasso.get().load(imageUri).into(binding.imageViewCircle);
             imageControl = true;
         }else{
