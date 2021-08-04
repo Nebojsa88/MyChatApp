@@ -1,4 +1,4 @@
-package com.radanov.mychatapp;
+package com.radanov.mychatapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +22,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.radanov.mychatapp.databinding.ActivityMyLoginBinding;
 import com.radanov.mychatapp.databinding.ActivitySignUpBinding;
 import com.squareup.picasso.Picasso;
 
@@ -70,11 +69,12 @@ public class SignUpActivity extends AppCompatActivity {
             String password = binding.editTextPasswordSignup.getText().toString();
             String userName = binding.editTextUserNameSignup.getText().toString();
 
-                //uploadPhoto();
-            if(!email.equals("") && !password.equals("") && !userName.equals("")){
 
+            if(!email.equals("") && !password.equals("") && !userName.equals("") && imageControl){
                 signup(email, password, userName);
 
+            }else {
+                Toast.makeText(SignUpActivity.this, "Please fill all fields !", Toast.LENGTH_SHORT).show();
             }
             }
         });
@@ -90,12 +90,15 @@ public class SignUpActivity extends AppCompatActivity {
                 if (task.isSuccessful())
                 {
                     reference.child("Users").child(auth.getUid()).child("userName").setValue(userName);
+                    reference.child("Users").child(auth.getUid()).child("image").setValue(imageUri.toString());
 
                     if(imageControl)
                     {
                         UUID randomID = UUID.randomUUID();
                         //final String imageName = "images/"+ randomID + ".jpg";
-                        storageReference.child("Users").putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+
+                        storageReference.child(auth.getUid()).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 Toast.makeText(SignUpActivity.this, "Upload Successful !", Toast.LENGTH_SHORT).show();
@@ -117,7 +120,7 @@ public class SignUpActivity extends AppCompatActivity {
                         reference.child("Users").child(auth.getUid()).child("image").setValue("null");
                     }
 
-                    Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -128,8 +131,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
-
     public void imageChooser(){
 
         Intent intent = new Intent();

@@ -1,4 +1,4 @@
-package com.radanov.mychatapp;
+package com.radanov.mychatapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

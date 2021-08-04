@@ -1,4 +1,4 @@
-package com.radanov.mychatapp;
+package com.radanov.mychatapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

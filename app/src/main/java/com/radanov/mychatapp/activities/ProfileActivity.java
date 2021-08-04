@@ -1,4 +1,4 @@
-package com.radanov.mychatapp;
+package com.radanov.mychatapp.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.radanov.mychatapp.databinding.ActivityForgetBinding;
 import com.radanov.mychatapp.databinding.ActivityProfileBinding;
 import com.squareup.picasso.Picasso;
 
@@ -33,12 +34,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     ActivityProfileBinding binding;
 
-    private boolean imageControl = false;
+    boolean imageControl = false;
 
     FirebaseDatabase database;
     DatabaseReference reference;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
+
     Uri imageUri;
 
     FirebaseStorage firebaseStorage;
@@ -79,21 +81,22 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void getUserInfo() {
 
+        storageReference.child(auth.getCurrentUser().getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+
+                imageUri = task.getResult();
+                Picasso.get().load(imageUri).into(binding.imageViewCircleProfile);
+            }
+        });
+
         reference.child("Users").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 String name = snapshot.child("userName").getValue().toString();
-                String image = snapshot.child("image").getValue().toString();
                 binding.editTextUserNameProfile.setText(name);
-
-                if (image.equals("null")) {
-                    binding.imageViewCircleProfile.setImageResource(R.drawable.account);
-                } else {
-                    Picasso.get().load(image).into(binding.imageViewCircleProfile);
-                }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -104,12 +107,13 @@ public class ProfileActivity extends AppCompatActivity {
     public void updateProfile() {
 
         String userName = binding.editTextUserNameProfile.getText().toString();
-        reference.child("Users").child(firebaseUser.getUid()).setValue(userName);
+        reference.child("Users").child(firebaseUser.getUid()).child("userName").setValue(userName);
+
         if(imageControl)
         {
             UUID randomID = UUID.randomUUID();
             //final String imageName = "images/"+ randomID + ".jpg";
-            storageReference.child("Users").putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            storageReference.child(auth.getUid()).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Toast.makeText(ProfileActivity.this, "Upload Successful !", Toast.LENGTH_SHORT).show();
