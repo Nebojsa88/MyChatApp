@@ -13,7 +13,8 @@
         android:theme="@style/Theme.MyChatApp">
         <activity
             android:name=".activities.MyChatActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.MyChatApp.NoActionBar"/>
         <activity
             android:name=".activities.ProfileActivity"
             android:exported="true" />

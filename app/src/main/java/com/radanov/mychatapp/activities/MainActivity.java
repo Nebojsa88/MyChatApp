@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                 binding.rv.setAdapter(adapter);
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -135,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         finishAffinity();
     }
 }

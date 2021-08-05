@@ -90,7 +90,6 @@ public class SignUpActivity extends AppCompatActivity {
                 if (task.isSuccessful())
                 {
                     reference.child("Users").child(auth.getUid()).child("userName").setValue(userName);
-                    reference.child("Users").child(auth.getUid()).child("image").setValue(imageUri.toString());
 
                     if(imageControl)
                     {
@@ -102,6 +101,15 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 Toast.makeText(SignUpActivity.this, "Upload Successful !", Toast.LENGTH_SHORT).show();
+                                storageReference.child(auth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        reference.child("Users").child(auth.getUid()).child("image").setValue(uri.toString());
+                                        Toast.makeText(SignUpActivity.this, "DATABASE SUCCESS", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

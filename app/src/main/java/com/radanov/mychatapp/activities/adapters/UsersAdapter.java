@@ -64,6 +64,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
                 if(imageURL.equals("null")){
                     holder.imageViewUsers.setImageResource(R.drawable.account);
+                    notifyDataSetChanged();
                 }else
                 {
                     Picasso.get().load(imageURL).into(holder.imageViewUsers);
