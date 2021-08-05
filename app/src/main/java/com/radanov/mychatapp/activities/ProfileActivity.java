@@ -80,13 +80,15 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void getUserInfo() {
-
+        binding.progressBarProfile.setVisibility(View.VISIBLE);
         storageReference.child(auth.getCurrentUser().getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
-
-                imageUri = task.getResult();
+                if(task.isSuccessful()){
+                    imageUri = task.getResult();
                 Picasso.get().load(imageUri).into(binding.imageViewCircleProfile);
+                binding.progressBarProfile.setVisibility(View.INVISIBLE);
+                }
             }
         });
 
@@ -94,8 +96,10 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                String name = snapshot.child("userName").getValue().toString();
-                binding.editTextUserNameProfile.setText(name);
+                if (snapshot.child("userName").getValue() != null) {
+                    String name = snapshot.child("userName").getValue().toString();
+                    binding.editTextUserNameProfile.setText(name);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

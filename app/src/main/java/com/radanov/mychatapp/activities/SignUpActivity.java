@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -120,6 +121,9 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
 
+                               /* double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                                binding.progressBar.setProgress((int) progress);*/
+
                             }
                         });
                     }
@@ -128,9 +132,12 @@ public class SignUpActivity extends AppCompatActivity {
                         reference.child("Users").child(auth.getUid()).child("image").setValue("null");
                     }
 
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+
+
+
                 }
                 else
                 {

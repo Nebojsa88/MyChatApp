@@ -56,7 +56,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                userName = snapshot.getValue().toString();
+                if(snapshot.getValue() != null){
+                    userName = snapshot.getValue().toString();
+                }
+
                 getUsers();
                 adapter = new UsersAdapter(list, userName, MainActivity.this);
                 binding.rv.setAdapter(adapter);

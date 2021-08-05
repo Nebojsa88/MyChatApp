@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,8 +28,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
     List<String> userList;
-    String userName;
+    private String userName;
     Context context;
+
 
     FirebaseDatabase database;
     DatabaseReference reference;
@@ -40,6 +42,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
+
     }
 
     @NonNull
@@ -68,7 +71,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 }else
                 {
                     Picasso.get().load(imageURL).into(holder.imageViewUsers);
+
+
                 }
+
 
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -106,6 +112,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             textViewUsers = itemView.findViewById(R.id.textViewUsers);
             imageViewUsers = itemView.findViewById(R.id.imageViewUsers);
             cardView = itemView.findViewById(R.id.cardView);
+
         }
     }
 }

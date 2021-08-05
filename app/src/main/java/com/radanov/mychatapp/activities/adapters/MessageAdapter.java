@@ -14,11 +14,11 @@ import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
-    List<ModelClass> list;
-    String userName;
-    boolean status;
-    int send;
-    int receive;
+    private List<ModelClass> list;
+    private String userName;
+    private boolean status;
+    private int send;
+    private int receive;
 
     public MessageAdapter(List<ModelClass> list, String userName) {
         this.list = list;
@@ -29,7 +29,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         receive = 2;
 
     }
-
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,12 +48,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         holder.textView.setText(list.get(position).getMessage());
 
     }
-
     @Override
     public int getItemCount() {
         return list.size();
     }
-
 
     public class MessageViewHolder extends RecyclerView.ViewHolder{
 
@@ -70,7 +67,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
         }
     }
-
     @Override
     public int getItemViewType(int position) {
         if(list.get(position).getFrom().equals(userName)){
