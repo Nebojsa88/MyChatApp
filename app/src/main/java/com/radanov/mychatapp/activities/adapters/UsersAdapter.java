@@ -29,6 +29,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     List<String> userList;
     private String userName;
+    /*private String otherName;*/
+    private String imageURL;
     Context context;
 
 
@@ -55,13 +57,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         reference.child("Users").child(userList.get(position)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 String otherName = snapshot.child("userName").getValue().toString();
-                String imageURL = snapshot.child("image").getValue().toString();
+                imageURL = snapshot.child("image").getValue().toString();
 
                 holder.textViewUsers.setText(otherName);
 
@@ -71,11 +72,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                 }else
                 {
                     Picasso.get().load(imageURL).into(holder.imageViewUsers);
-
-
                 }
-
-
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -86,7 +83,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
                     }
                 });
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

@@ -52,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setTitle("Profile");
+
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();

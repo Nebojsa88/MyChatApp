@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference reference;
     FirebaseDatabase database;
 
-    List<String> list;
+    private List<String> list;
     UsersAdapter adapter;
 
     String userName;
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
 
         binding.rv.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<>();
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 getUsers();
                 adapter = new UsersAdapter(list, userName, MainActivity.this);
                 binding.rv.setAdapter(adapter);
+                getSupportActionBar().setTitle(userName);
 
             }
             @Override

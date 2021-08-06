@@ -40,6 +40,8 @@ public class MyLoginActivity extends AppCompatActivity {
         binding = ActivityMyLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setTitle("Login");
+
         auth = FirebaseAuth.getInstance();
 
         binding.buttonSignin.setOnClickListener(new View.OnClickListener() {
